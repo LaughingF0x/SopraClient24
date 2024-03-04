@@ -3,21 +3,21 @@ import { Spinner } from 'components/ui/Spinner';
 import BaseContainer from "components/ui/BaseContainer";
 import { api, handleError } from "../../helpers/api";
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useParams, useNavigate, Navigate} from 'react-router-dom';
 import { Button } from "components/ui/Button";
-import "styles/views/EditPage.scss";
+import "styles/views/Register.scss";
 import PropTypes from "prop-types";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const FormField = props => {
   return (
-    <div className="editPage field">
-      <label className="editPage label">
+    <div className="register field">
+      <label className="register label">
         {props.label}
       </label>
       <input
-        className="editPage input"
+        className="register input"
         placeholder="enter here.."
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
@@ -33,12 +33,12 @@ FormField.propTypes = {
 
 const DateField = props => {
   return (
-    <div className="editPage field">
-      <label className="editPage label">
+    <div className="register field">
+      <label className="register label">
         {props.label}
       </label>
       <DatePicker
-        className="editPage input"
+        className="register input"
         selected={props.value} // Use 'value' instead of 'selected'
         onChange={(date) => props.onChange(date)} // Assuming 'onChange' is a function that handles date change
         //type={"date"}/>
@@ -57,20 +57,11 @@ const EditPage = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState("");
   const [birthdate, setBirthdate] = useState(null);
 
   useEffect(() => {
 
-    /*const save = async () => {
-      try {
-        const requestBody = JSON.stringify({ username, birthdate });
-        await api.put(`/users/${userId}`, requestBody);
-        navigate(`/game/userpage/${userId}`);
-      } catch (error) {
-        console.error(`Error updating user: ${handleError(error)}`);
-      }
-    };*/
     async function fetchData() {
       try {
         const response = await api.get(`/users/${userId}`);
@@ -87,10 +78,11 @@ const EditPage = () => {
     return <Spinner />;
   }
 
-  function save() {
+  async function save() {
     try {
-      const requestBody = JSON.stringify({ username, birthdate });
-      api.put(`/users/${userId}`, requestBody);
+      const token = localStorage.getItem("token");
+      const requestBody = JSON.stringify({username, birthdate, token});
+      await api.put(`/users/${userId}`, requestBody);
       navigate(`/game/userpage/${userId}`);
     } catch (error) {
       console.error(`Error updating user: ${handleError(error)}`);
@@ -98,6 +90,8 @@ const EditPage = () => {
   }
 
   return (
+      <> {userId === localStorage.getItem('userId') ?
+
     <BaseContainer className="game container">
       <h1>Profile Page</h1>
 
@@ -105,12 +99,12 @@ const EditPage = () => {
         <h2>Edit Profile</h2>
         <FormField
           label="Username"
-          value={localStorage.getItem("username")}
-          onChange={un => setUsername(un)}
+          value={username}
+          onChange={(un) => setUsername(un)}
         />
         <DateField
-          label="Birthday"
-          value={localStorage.getItem("birthdate") ? new Date(localStorage.getItem("birthdate")) : null}
+          label="Birthdate"
+          value={birthdate}
           onChange={un => setBirthdate(un)}
         />
       </div>}
@@ -120,7 +114,7 @@ const EditPage = () => {
         <Button
           width="100%"
           onClick={() => save()}
-          disabled={!username}
+          disabled={!username && !birthdate}
         >
           Save
         </Button>
@@ -141,6 +135,8 @@ const EditPage = () => {
 
 
     </BaseContainer>
+          : <Navigate to={"/"} /> }
+      </>
   );
 };
 export default EditPage;

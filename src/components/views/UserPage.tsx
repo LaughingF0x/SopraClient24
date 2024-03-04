@@ -18,6 +18,7 @@ const UserPage = () => {
       try {
         const response = await api.get(`/users/${userId}`);
         setUser(response.data);
+        console.log(user)
         localStorage.setItem("token", user.token);
         localStorage.setItem('userId', user.id);
         localStorage.setItem('username', user.username);
@@ -29,7 +30,7 @@ const UserPage = () => {
     }
 
     fetchData();
-  }, [userId]);
+  }, []);
 
   if (!user) {
     return <Spinner />;

@@ -8,5 +8,9 @@ const BaseContainer = props => (
   </div>
 );
 
+BaseContainer.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string
+};
 
 export default BaseContainer;

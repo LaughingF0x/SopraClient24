@@ -14,3 +14,12 @@ export const ReactLogo = props => {
   );
 };
 
+ReactLogo.propTypes = {
+    className: PropTypes.string,
+  style: PropTypes.object,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  viewBox: PropTypes.string,
+  children: PropTypes.node,
+}
+

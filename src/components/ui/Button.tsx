@@ -11,4 +11,13 @@ export const Button = props => (
   </button>
 );
 
+Button.propTypes = {
+  disabled: PropTypes.bool,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  width: PropTypes.string,
+  onClick: PropTypes.func,
+};
+
 
