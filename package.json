@@ -3,9 +3,13 @@
   "version": "0.24.0",
   "private": true,
   "dependencies": {
+    "@types/prop-types": "^15.7.11",
+    "@types/react-datepicker": "^6.0.1",
     "axios": "^1.6.7",
     "eslint-config-react-app": "^7.0.1",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-datepicker": "^6.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3",
     "react-scripts": "^5.0.1",

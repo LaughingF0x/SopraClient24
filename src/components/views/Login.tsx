@@ -36,18 +36,21 @@ FormField.propTypes = {
 const Login = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(null);
-  const [username, setUsername] = useState<string>(null);
+  const [username, getUsername] = useState<string>(null);
+  const [password, getPassword] = useState<string>(null);
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({ username, name });
-      const response = await api.post("/users", requestBody);
+      const requestBody = JSON.stringify({ username, password });
+      const response = await api.post("/users/login", requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
 
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('username', user.username);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/game");
@@ -65,21 +68,29 @@ const Login = () => {
           <FormField
             label="Username"
             value={username}
-            onChange={(un: string) => setUsername(un)}
+            onChange={(un: string) => getUsername(un)}
           />
           <FormField
-            label="Name"
-            value={name}
-            onChange={(n) => setName(n)}
+            label="Password"
+            value={password}
+            onChange={(p) => getPassword(p)}
           />
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!username || !password}
               width="100%"
               onClick={() => doLogin()}
             >
               Login
             </Button>
+
+            <Button
+              width="100%"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </Button>
+
           </div>
         </div>
       </div>
@@ -91,3 +102,4 @@ const Login = () => {
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
 export default Login;
+

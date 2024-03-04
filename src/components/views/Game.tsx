@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
 import { Spinner } from "components/ui/Spinner";
 import { Button } from "components/ui/Button";
-import {useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
@@ -31,10 +31,16 @@ const Game = () => {
   // more information can be found under https://react.dev/learn/state-a-components-memory and https://react.dev/reference/react/useState 
   const [users, setUsers] = useState<User[]>(null);
 
-  const logout = (): void => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const logout = async () => {
+    const fullUser = localStorage.getItem("userId")
+    //We first get the logged in user with his token, then we log him out
+    //with a get request to the backend
+    api.get("/logout/" + fullUser);
+    //the token is removed from the localstorage and therefore logged out
+    localStorage.removeItem('token');
+    navigate('/login');
+    //history push used to redirect to the login page
+  }
 
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
@@ -49,7 +55,6 @@ const Game = () => {
         // delays continuous execution of an async operation for 1 second.
         // This is just a fake async call, so that the spinner can be displayed
         // feel free to remove it :)
-        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // Get the returned users and update the state.
         setUsers(response.data);
@@ -81,13 +86,16 @@ const Game = () => {
 
   let content = <Spinner />;
 
+
   if (users) {
     content = (
       <div className="game">
         <ul className="game user-list">
-          {users.map((user: User) => (
+          {users.map((user) => (
             <li key={user.id}>
-              <Player user={user} />
+              <Link to={{ pathname: `userpage/${user.id}`/*, state: user.id*/ }}>
+                <Player user={user} />
+              </Link>
             </li>
           ))}
         </ul>

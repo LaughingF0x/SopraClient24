@@ -20,7 +20,7 @@
   &.user-list {
     list-style: none;
     padding-left: 0;
-  }
+    }
   &.user-item {
     display: flex;
     flex-direction: column;
@@ -33,6 +33,7 @@
 }
 
 .player {
+  color: white;
   &.container {
     margin: 0.5em 0;
     width: 20em;

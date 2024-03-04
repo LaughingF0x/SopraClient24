@@ -12,9 +12,3 @@ export const Button = props => (
 );
 
 
-Button.propTypes = {
-  width: PropTypes.number,
-  style: PropTypes.string,
-  className: PropTypes.string,
-  children: PropTypes.node,
-};

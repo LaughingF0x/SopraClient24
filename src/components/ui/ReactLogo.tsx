@@ -14,7 +14,3 @@ export const ReactLogo = props => {
   );
 };
 
-ReactLogo.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-};
