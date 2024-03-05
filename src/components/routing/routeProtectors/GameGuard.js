@@ -1,25 +1,34 @@
-import React from "react";
-import {Navigate, Outlet} from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { api } from "helpers/api";
 
-/**
- * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
- * They are functional components. Based on the props passed, a route gets rendered.
- * In this case, if the user is authenticated (i.e., a token is stored in the local storage)
- * <Outlet /> is rendered --> The content inside the <GameGuard> in the App.js file, i.e. the user is able to access the main app.
- * If the user isn't authenticated, the components redirects to the /login screen
- * @Guard
- * @param props
- */
+
 export const GameGuard = () => {
-  if (localStorage.getItem("token")) {
-    
-    return <Outlet />;
-  }
-  
-  return <Navigate to="/login" replace />;
-};
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-GameGuard.propTypes = {
-  children: PropTypes.node
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsAuthenticated(false);
+
+        return;
+      }
+      try {
+        const response = await api.post("/verify-token", { token });
+        setIsAuthenticated(true);
+      } catch (error) {
+        localStorage.removeItem("token");
+        setIsAuthenticated(false);
+      }
+    };
+
+    verifyToken();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
