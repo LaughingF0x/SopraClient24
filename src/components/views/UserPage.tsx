@@ -56,6 +56,7 @@ const UserPage = () => {
                   );
                   const nextDay = new Date(originalDate);
                   nextDay.setDate(originalDate.getDate() + 1);
+
                   return nextDay.toLocaleDateString("en-GB");
                 })()
                 : "YYYY-MM-DD"}
@@ -78,4 +79,5 @@ const UserPage = () => {
     </BaseContainer>
   );
 };
+
 export default UserPage;
