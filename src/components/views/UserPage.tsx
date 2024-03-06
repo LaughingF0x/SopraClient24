@@ -1,9 +1,8 @@
-
-import { Spinner } from 'components/ui/Spinner';
+import { Spinner } from "components/ui/Spinner";
 import BaseContainer from "components/ui/BaseContainer";
 import { api, handleError } from "../../helpers/api";
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/UserPage.scss";
 
@@ -18,10 +17,10 @@ const UserPage = () => {
       try {
         const response = await api.get(`/users/${userId}`);
         setUser(response.data);
-        console.log(user)
+        console.log(user);
         localStorage.setItem("token", user.token);
-        localStorage.setItem('userId', user.id);
-        localStorage.setItem('username', user.username);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("username", user.username);
       } catch (error) {
         console.error(`Error fetching user: ${handleError(error)}`);
       } finally {
@@ -46,13 +45,20 @@ const UserPage = () => {
             <div>Status: {user.status}</div>
             <div>Creation date: {user.creation_date.split("T")[0]}</div>
             <div>
-              Birthday: {user.birthdate ? (() => {
-              const dateParts = user.birthdate.split("T")[0].split("-");
-              const originalDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-              const nextDay = new Date(originalDate);
-              nextDay.setDate(originalDate.getDate() + 1);
-              return nextDay.toLocaleDateString('en-GB');
-            })() : "YYYY-MM-DD"}
+              Birthday:{" "}
+              {user.birthdate
+                ? (() => {
+                  const dateParts = user.birthdate.split("T")[0].split("-");
+                  const originalDate = new Date(
+                    dateParts[0],
+                    dateParts[1] - 1,
+                    dateParts[2]
+                  );
+                  const nextDay = new Date(originalDate);
+                  nextDay.setDate(originalDate.getDate() + 1);
+                  return nextDay.toLocaleDateString("en-GB");
+                })()
+                : "YYYY-MM-DD"}
             </div>
           </div>
           <div className="register button-container">
@@ -63,10 +69,7 @@ const UserPage = () => {
             >
               Edit
             </Button>
-            <Button
-              width="100%"
-              onClick={() => navigate("/game")}
-            >
+            <Button width="100%" onClick={() => navigate("/game")}>
               Return to Dashboard!
             </Button>
           </div>
@@ -75,4 +78,4 @@ const UserPage = () => {
     </BaseContainer>
   );
 };
- export default UserPage;
+export default UserPage;

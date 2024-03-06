@@ -15,7 +15,7 @@ export const ReactLogo = props => {
 };
 
 ReactLogo.propTypes = {
-    className: PropTypes.string,
+  className: PropTypes.string,
   style: PropTypes.object,
   width: PropTypes.string,
   height: PropTypes.string,

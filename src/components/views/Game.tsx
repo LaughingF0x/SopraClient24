@@ -37,8 +37,8 @@ const Game = () => {
     //with a get request to the backend
     api.get("/logout/" + fullUser);
     //the token is removed from the localstorage and therefore logged out
-    localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem("token");
+    navigate("/login");
     //history push used to redirect to the login page
   }
 
