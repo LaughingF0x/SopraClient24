@@ -71,7 +71,7 @@ const UserPage = () => {
               Edit
             </Button>
             <Button width="100%" onClick={() => navigate("/game")}>
-              Return to Dashboard!
+              Dashboard
             </Button>
           </div>
         </div>
