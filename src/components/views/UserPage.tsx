@@ -10,7 +10,6 @@ const UserPage = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Initialize loading state as true
 
   useEffect(() => {
     async function fetchData() {
@@ -23,8 +22,6 @@ const UserPage = () => {
         localStorage.setItem("username", user.username);
       } catch (error) {
         console.error(`Error fetching user: ${handleError(error)}`);
-      } finally {
-        setLoading(false); // Set loading state to false after fetching data (whether success or error)
       }
     }
 
